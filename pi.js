@@ -6,6 +6,10 @@ var piComputer = (function() {
 		return (_numIn+_numOut) === 0 ? 0 : (4 * _numIn) / (_numIn + _numOut);
 	};
 
+	var getNumberOfPoints = function () {
+		return _numIn + _numOut;
+	}
+
 	var _getRandomPoint = function() {
 		return {
 			x: (Math.random() * 2) - 1,
@@ -33,20 +37,23 @@ var piComputer = (function() {
 
 	return {
 		getCurrentPI: getCurrentPI,
+		getNumberOfPoints: getNumberOfPoints,
 		addGuess: addGuess,
 		getState: getState
 	};
 }) ();
 
 var viz = (function () {
+	var activePoints = [];
 	var c = document.getElementById("drawPI");
 	var ctx = c.getContext("2d");
+
 	var drawPt = function (pt) {
 		var drawX = 200 * pt.x + 200;
 		var drawY = 200 * pt.y + 200;
 		ctx.fillStyle = pt.in ? "rgb(0,200,0)" : "rgb(200,0,0)";
-		ctx.fillRect (drawX, drawY, 2, 2);
-	}
+		ctx.fillRect (drawX, drawY, 10, 10);
+	};
 
 	return {
 		drawPt: drawPt
@@ -54,16 +61,19 @@ var viz = (function () {
 })();
 
 
-var MAX_GUESSES = 100000,
+var MAX_GUESSES = 1000000,
 	i = 0;
 
 function getAndDrawNextPoint () {
 	var nextPt = piComputer.addGuess();
 	viz.drawPt (nextPt); 
-	document.getElementById("currentPI").innerHTML = "Estimate: " + piComputer.getCurrentPI();
+	document.getElementById("currentPI").innerHTML = "" + piComputer.getCurrentPI();
+	document.getElementById("currentPoints").innerHTML = "" + piComputer.getNumberOfPoints();
 	i += 1;
 	if (i < MAX_GUESSES) {
 		requestAnimationFrame (getAndDrawNextPoint);
+	} else {
+		alert ("Done!");
 	}
 }
 
