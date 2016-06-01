@@ -52,7 +52,7 @@ var viz = (function () {
 		var drawX = 200 * pt.x + 200;
 		var drawY = 200 * pt.y + 200;
 		ctx.fillStyle = pt.in ? "rgb(0,200,0)" : "rgb(200,0,0)";
-		ctx.fillRect (drawX, drawY, 10, 10);
+		ctx.fillRect (drawX, drawY, 2, 2);
 	};
 
 	return {
